@@ -15,7 +15,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y fakeroot build-essential
-          sudo cd ./Hello
+          cd ./Hello
           sudo g++ -o main main.cpp
         
       - name: Create release
