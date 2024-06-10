@@ -14,9 +14,9 @@ jobs:
       - name: Install Linux dev env
         run: |
           sudo apt update
-          sudo apt install -y fakeroot build-essential
-          cd ./Hello
+          sudo apt install -y build-essential
           sudo g++ -o main main.cpp
+          ./main
         
       - name: Create release
         uses: actions/create-release@v1
