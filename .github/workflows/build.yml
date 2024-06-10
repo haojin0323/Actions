@@ -14,7 +14,7 @@ jobs:
       - name: Install Linux dev env
         run: |
           sudo apt update
-          sudo apt install -y build-essential
+          sudo apt install -y fakeroot build-essential
           sudo cd ./Hello
           sudo g++ -o main main.cpp
         
