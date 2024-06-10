@@ -1,0 +1,28 @@
+name: Compile and Release
+
+on:
+  - push
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-20.04
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Install Linux dev env
+          run: |
+            sudo apt update
+            sudo apt install -y build-essential
+            sudo cd ./Hello
+            sudo g++ -o main main.cpp
+        
+        - name: Create release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: ${{ github.ref }}
+            release_name: Release ${{ github.ref }}
+
