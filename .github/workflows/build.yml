@@ -15,14 +15,28 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y build-essential
-          sudo g++ -o main main.cpp
-          ./main
+          sudo make
         
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-
+      # 发布Release并上传二进制文件  
+      - name: Create Release  
+        id: create_release  
+        uses: actions/create-release@v1  
+        env:  
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }} # 使用仓库的GITHUB_TOKEN  
+        with:  
+          tag_name: ${{ github.ref_name }} # 可以是分支名（如果不是基于tag发布）  
+          release_name: Release ${{ github.ref_name }}  
+          body: "Automated release from GitHub Actions"  
+          draft: false  
+          prerelease: false  
+  
+      - name: Upload Release Asset  
+        id: upload-release-asset  
+        uses: actions/upload-release-asset@v1  
+        env:  
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}  
+        with:  
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # 使用上一步创建的Release的上传URL  
+          asset_path: ./main # 替换为你的二进制文件路径  
+          asset_name: main # 替换为你的二进制文件名  
+          asset_content_type: application/octet-stream
